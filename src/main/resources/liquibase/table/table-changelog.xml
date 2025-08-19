@@ -8,6 +8,8 @@
         <dbms type="postgresql"/>
     </preConditions>
 
+    <include file="queue_tasks.sql" relativeToChangelogFile="true"/>
+
     <include file="updates.sql" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

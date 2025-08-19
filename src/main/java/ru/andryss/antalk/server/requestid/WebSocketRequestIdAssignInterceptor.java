@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @SuppressWarnings("NullableProblems")
-public class WebSocketRequestIdAssignInterceptor extends AbstractRequestIdAssign implements ChannelInterceptor {
+public class WebSocketRequestIdAssignInterceptor implements RequestIdAware, ChannelInterceptor {
 
     private static final String MESSAGE_TYPE_HEADER = "simpMessageType";
     private static final String DESTINATION_HEADER = "simpDestination";

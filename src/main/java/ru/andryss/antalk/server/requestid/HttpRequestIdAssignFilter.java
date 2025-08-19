@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class HttpRequestIdAssignFilter extends AbstractRequestIdAssign implements Filter {
+public class HttpRequestIdAssignFilter implements RequestIdAware, Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
