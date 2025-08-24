@@ -12,7 +12,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UpdateEntity {
     private long id;
-    private long prev;
     private UpdateType type;
     private Map<String, Object> data;
     private Instant createdAt;
