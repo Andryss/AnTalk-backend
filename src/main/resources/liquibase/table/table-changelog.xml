@@ -10,6 +10,11 @@
 
     <include file="queue_tasks.sql" relativeToChangelogFile="true"/>
 
-    <include file="updates.sql" relativeToChangelogFile="true"/>
+    <include file="users.sql" relativeToChangelogFile="true"/>
+    <include file="sessions.sql" relativeToChangelogFile="true"/>
+
+    <include file="chats.sql" relativeToChangelogFile="true"/>
+    <include file="messages.sql" relativeToChangelogFile="true"/>
+    <include file="notifications.sql" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
