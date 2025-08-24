@@ -6,6 +6,7 @@ create table sessions (
     user_id bigint not null,
     meta jsonb not null,
     status int not null,
+    last_notification bigint not null,
     created_at timestamp not null default current_timestamp
 );
 
@@ -15,4 +16,5 @@ comment on column sessions.id is 'Идентификатор';
 comment on column sessions.user_id is 'Идентификатор пользователя';
 comment on column sessions.meta is 'Метаинформация о сессии';
 comment on column sessions.status is 'Статус';
+comment on column sessions.last_notification is 'Последнее полученное уведомление';
 comment on column sessions.created_at is 'Время создания';
