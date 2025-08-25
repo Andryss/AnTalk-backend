@@ -1,6 +1,5 @@
 package ru.andryss.antalk.server.config.dbqueue;
 
-import jakarta.annotation.Nonnull;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import ru.andryss.antalk.server.service.dbqueue.DbQueueProcessor;
@@ -24,7 +23,7 @@ public class QueueConsumerBase<P extends QueuePayload> implements QueueConsumer<
     private final DbQueueProcessor<P> processor;
 
     @Override
-    @Nonnull
+    @SuppressWarnings("NullableProblems")
     public TaskExecutionResult execute(Task<P> task) {
         return processor.execute(task.getPayloadOrThrow());
     }
