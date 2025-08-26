@@ -10,6 +10,9 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ru.andryss.antalk.server.entity.MessageEntity;
 
+/**
+ * Репозиторий для работы с таблицей "messages"
+ */
 @Repository
 @RequiredArgsConstructor
 public class MessageRepository {
@@ -26,6 +29,9 @@ public class MessageRepository {
         return message;
     };
 
+    /**
+     * Получить сообщение по идентификатору
+     */
     public Optional<MessageEntity> findById(long id) {
         MapSqlParameterSource params = new MapSqlParameterSource()
                 .addValue("id", id);

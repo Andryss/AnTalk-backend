@@ -3,6 +3,9 @@ package ru.andryss.antalk.server.entity;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Типы чатов
+ */
 @Getter
 @RequiredArgsConstructor
 public enum ChatType {
@@ -13,6 +16,9 @@ public enum ChatType {
 
     private final int id;
 
+    /**
+     * Получить тип чата по идентификатору
+     */
     public static ChatType fromId(int id) {
         for (ChatType type : values()) {
             if (type.getId() == id) {
@@ -22,12 +28,18 @@ public enum ChatType {
         throw new IllegalArgumentException("Unknown chat type " + id);
     }
 
+    /**
+     * Конвертировать тип чата из класса API
+     */
     public static ChatType fromApi(ru.andryss.antalk.generated.model.ChatType type) {
         return switch (type) {
             case PRIVATE -> PRIVATE;
         };
     }
 
+    /**
+     * Конвертировать тип чата в класс API
+     */
     public static ru.andryss.antalk.generated.model.ChatType toApi(ChatType type) {
         return switch (type) {
             case PRIVATE -> ru.andryss.antalk.generated.model.ChatType.PRIVATE;

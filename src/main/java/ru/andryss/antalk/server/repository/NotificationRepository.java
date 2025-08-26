@@ -8,12 +8,18 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ru.andryss.antalk.server.entity.NotificationEntity;
 
+/**
+ * Репозиторий для работы с таблицей "notifications"
+ */
 @Repository
 @RequiredArgsConstructor
 public class NotificationRepository {
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
+    /**
+     * Сохранить сущности уведомлений
+     */
     public void save(List<NotificationEntity> entities) {
         MapSqlParameterSource[] paramsList = entities.stream()
                 .map(entity -> new MapSqlParameterSource()

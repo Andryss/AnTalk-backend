@@ -6,12 +6,18 @@ import ru.andryss.antalk.server.entity.ChatEntity;
 import ru.andryss.antalk.server.exception.ChatNotFoundException;
 import ru.andryss.antalk.server.repository.ChatRepository;
 
+/**
+ * Сервис для работы с чатами
+ */
 @Service
 @RequiredArgsConstructor
 public class ChatService {
 
     private final ChatRepository chatRepository;
 
+    /**
+     * Получить чат по идентификатору. Если чат не найден - выбросить ошибку
+     */
     public ChatEntity findByIdOrThrow(long id) {
         return chatRepository.findById(id)
                 .orElseThrow(() -> new ChatNotFoundException(id));

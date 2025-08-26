@@ -14,6 +14,9 @@ import ru.andryss.antalk.server.entity.UpdateEntity;
 import ru.andryss.antalk.server.entity.UpdateType;
 import ru.andryss.antalk.server.service.ObjectMapperWrapper;
 
+/**
+ * Репозиторий для работы с таблицей "updates"
+ */
 @Repository
 @RequiredArgsConstructor
 public class UpdateRepository implements InitializingBean {
@@ -35,6 +38,9 @@ public class UpdateRepository implements InitializingBean {
         };
     }
 
+    /**
+     * Получить обновление по идентификатору
+     */
     public Optional<UpdateEntity> findById(long id) {
         MapSqlParameterSource params = new MapSqlParameterSource()
                 .addValue("id", id);

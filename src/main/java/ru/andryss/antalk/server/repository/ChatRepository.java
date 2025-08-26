@@ -14,6 +14,9 @@ import ru.andryss.antalk.server.entity.ChatEntity;
 import ru.andryss.antalk.server.entity.ChatType;
 import ru.andryss.antalk.server.service.ObjectMapperWrapper;
 
+/**
+ * Репозиторий для работы с таблицей "chats"
+ */
 @Repository
 @RequiredArgsConstructor
 public class ChatRepository implements InitializingBean {
@@ -35,6 +38,9 @@ public class ChatRepository implements InitializingBean {
         };
     }
 
+    /**
+     * Получить чат по идентификатору
+     */
     public Optional<ChatEntity> findById(long id) {
         MapSqlParameterSource params = new MapSqlParameterSource()
                 .addValue("id", id);

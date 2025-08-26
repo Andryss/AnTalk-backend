@@ -3,6 +3,9 @@ package ru.andryss.antalk.server.entity;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Статус сессии (соединения)
+ */
 @Getter
 @RequiredArgsConstructor
 public enum SessionStatus {
@@ -21,6 +24,9 @@ public enum SessionStatus {
 
     private final int id;
 
+    /**
+     * Получить статус сессии по идентификатору
+     */
     public static SessionStatus fromId(int id) {
         for (SessionStatus status : values()) {
             if (status.getId() == id) {
