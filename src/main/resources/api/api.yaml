@@ -62,7 +62,7 @@ components:
         userIds:
           $ref: "#/components/schemas/userIds"
         firstMessage:
-          $ref: "#/components/schemas/text"
+          $ref: "#/components/schemas/messageText"
     SendMessageRequest:
       description: Запрос на отправку сообщения
       type: object
@@ -72,17 +72,19 @@ components:
         chatId:
           $ref: "#/components/schemas/chatId"
         text:
-          $ref: "#/components/schemas/text"
+          $ref: "#/components/schemas/messageText"
     MessageDto:
       description: Сообщение
       type: object
       properties:
+        id:
+          $ref: "#/components/schemas/messageId"
         user:
           $ref: "#/components/schemas/UserDto"
         chat:
           $ref: "#/components/schemas/ChatDto"
         text:
-          $ref: "#/components/schemas/text"
+          $ref: "#/components/schemas/messageText"
     UserDto:
       type: object
       properties:
@@ -118,6 +120,10 @@ components:
       type: string
       enum:
         - PRIVATE
-    text:
+    messageId:
+      description: Идентификатор сообщения
+      type: integer
+      format: int64
+    messageText:
       description: Текст сообщения
       type: string

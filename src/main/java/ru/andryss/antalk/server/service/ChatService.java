@@ -6,7 +6,9 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
+import ru.andryss.antalk.generated.model.ChatDto;
 import ru.andryss.antalk.generated.model.CreateChatRequest;
+import ru.andryss.antalk.server.converter.EntityToDtoConverter;
 import ru.andryss.antalk.server.entity.ChatEntity;
 import ru.andryss.antalk.server.entity.ChatType;
 import ru.andryss.antalk.server.entity.UpdateEntity;
@@ -30,11 +32,12 @@ public class ChatService {
     private final UpdateRepository updateRepository;
     private final DbQueueService dbQueueService;
     private final TransactionTemplate transactionTemplate;
+    private final EntityToDtoConverter converter;
 
     /**
      * Создать новый чат. Также создаст задачу на уведомление пользователей
      */
-    public ChatEntity createNew(CreateChatRequest request) {
+    public ChatDto createNew(CreateChatRequest request) {
         ChatType chatType = ChatType.fromApi(request.getType());
 
         if (chatType == ChatType.PRIVATE) {
@@ -62,7 +65,7 @@ public class ChatService {
 
             dbQueueService.produceTask(CreateUpdateNotificationsProcessor.class, payload);
 
-            return savedChat;
+            return converter.convertChatToDto(savedChat);
         });
     }
 

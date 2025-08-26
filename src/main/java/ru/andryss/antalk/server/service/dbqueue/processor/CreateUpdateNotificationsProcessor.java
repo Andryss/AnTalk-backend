@@ -9,9 +9,9 @@ import ru.andryss.antalk.server.entity.MessageEntity;
 import ru.andryss.antalk.server.entity.NotificationEntity;
 import ru.andryss.antalk.server.entity.UpdateEntity;
 import ru.andryss.antalk.server.repository.ChatRepository;
+import ru.andryss.antalk.server.repository.MessageRepository;
 import ru.andryss.antalk.server.repository.NotificationRepository;
 import ru.andryss.antalk.server.repository.UpdateRepository;
-import ru.andryss.antalk.server.service.MessageService;
 import ru.andryss.antalk.server.service.dbqueue.DbQueueProcessor;
 import ru.andryss.antalk.server.service.dbqueue.DbQueueSettings;
 import ru.yoomoney.tech.dbqueue.api.TaskExecutionResult;
@@ -24,7 +24,7 @@ public class CreateUpdateNotificationsProcessor implements DbQueueProcessor<Crea
     private final UpdateRepository updateRepository;
     private final ChatRepository chatRepository;
     private final NotificationRepository notificationRepository;
-    private final MessageService messageService;
+    private final MessageRepository messageRepository;
 
     @Override
     public TaskExecutionResult execute(CreateUpdateNotificationsPayload payload) {
@@ -52,7 +52,7 @@ public class CreateUpdateNotificationsProcessor implements DbQueueProcessor<Crea
     private void handleMessageSentUpdate(UpdateEntity update) {
         long messageId = (long) update.getData().get("messageId");
 
-        MessageEntity message = messageService.findByIdOrThrow(messageId);
+        MessageEntity message = messageRepository.findByIdOrThrow(messageId);
 
         ChatEntity chat = chatRepository.findByIdOrThrow(message.getChatId());
 

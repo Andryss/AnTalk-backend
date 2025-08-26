@@ -5,8 +5,6 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.andryss.antalk.generated.api.ChatsApi;
 import ru.andryss.antalk.generated.model.ChatDto;
 import ru.andryss.antalk.generated.model.CreateChatRequest;
-import ru.andryss.antalk.server.entity.ChatEntity;
-import ru.andryss.antalk.server.entity.ChatType;
 import ru.andryss.antalk.server.service.ChatService;
 
 @RestController
@@ -17,13 +15,6 @@ public class ChatsApiController implements ChatsApi {
 
     @Override
     public ChatDto createChat(CreateChatRequest request) {
-        ChatEntity chat = chatService.createNew(request);
-        return convertToDto(chat);
-    }
-
-    private ChatDto convertToDto(ChatEntity chat) {
-        return new ChatDto()
-                .id(chat.getId())
-                .type(ChatType.toApi(chat.getType()));
+        return chatService.createNew(request);
     }
 }
