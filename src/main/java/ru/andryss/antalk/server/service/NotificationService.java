@@ -1,10 +1,7 @@
 package ru.andryss.antalk.server.service;
 
-import java.util.List;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.andryss.antalk.server.entity.NotificationEntity;
 import ru.andryss.antalk.server.repository.NotificationRepository;
 
 /**
@@ -15,11 +12,4 @@ import ru.andryss.antalk.server.repository.NotificationRepository;
 public class NotificationService {
 
     private final NotificationRepository notificationRepository;
-
-    /**
-     * Сохранить уведомления
-     */
-    public void save(List<NotificationEntity> entities) {
-        notificationRepository.save(entities);
-    }
 }

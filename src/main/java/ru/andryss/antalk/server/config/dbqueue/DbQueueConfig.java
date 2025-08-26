@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.transaction.support.TransactionOperations;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.util.ClassUtils;
 import ru.andryss.antalk.server.requestid.DbQueueTaskRequestIdAssignListener;
 import ru.andryss.antalk.server.service.ObjectMapperWrapper;
@@ -71,7 +71,7 @@ public class DbQueueConfig {
     @Bean
     public QueueShard<SpringDatabaseAccessLayer> queueShard(
             DataSource dataSource,
-            TransactionOperations transactionOperations,
+            TransactionTemplate transactionTemplate,
             DbQueueProperties properties
     ) {
         return new QueueShard<>(
@@ -80,7 +80,7 @@ public class DbQueueConfig {
                         DatabaseDialect.POSTGRESQL,
                         QueueTableSchema.builder().build(),
                         new JdbcTemplate(dataSource),
-                        transactionOperations
+                        transactionTemplate
                 )
         );
     }

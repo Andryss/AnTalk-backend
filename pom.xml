@@ -23,10 +23,12 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <db-queue.version>15.1.0</db-queue.version>
         <apache-commons-lang3.version>3.18.0</apache-commons-lang3.version>
+        <swagger-annotations.version>2.2.23</swagger-annotations.version>
         <zonky.embedded-database.version>2.6.0</zonky.embedded-database.version>
         <zonky.embedded-postgres.version>2.1.0</zonky.embedded-postgres.version>
         <checkstyle-plugin.version>3.6.0</checkstyle-plugin.version>
         <jacoco-plugin.version>0.8.12</jacoco-plugin.version>
+        <openapi-generator-plugin.version>7.8.0</openapi-generator-plugin.version>
     </properties>
 
     <dependencies>
@@ -102,6 +104,12 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>${apache-commons-lang3.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>${swagger-annotations.version}</version>
         </dependency>
 
         <!-- TEST DEPENDENCIES -->
@@ -205,6 +213,35 @@
                                     </limits>
                                 </rule>
                             </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>${openapi-generator-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/src/main/resources/api/api.yaml</inputSpec>
+                            <generatorName>spring</generatorName>
+                            <apiPackage>ru.andryss.antalk.generated.api</apiPackage>
+                            <modelPackage>ru.andryss.antalk.generated.model</modelPackage>
+                            <generateSupportingFiles>false</generateSupportingFiles>
+                            <configOptions>
+                                <skipDefaultInterface>true</skipDefaultInterface>
+                                <useResponseEntity>false</useResponseEntity>
+                                <useTags>true</useTags>
+                                <interfaceOnly>true</interfaceOnly>
+                                <useJakartaEe>true</useJakartaEe>
+                                <openApiNullable>false</openApiNullable>
+                                <serializableModel>true</serializableModel>
+                            </configOptions>
                         </configuration>
                     </execution>
                 </executions>

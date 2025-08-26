@@ -1,0 +1,123 @@
+openapi: 3.0.3
+info:
+  title: AnTalk
+  description: Мессенджер
+  version: 0.0.1
+
+servers:
+  - url: https://localhost:8080
+
+tags:
+  - name: chats
+    description: API для работы с чатами
+  - name: messages
+    description: API для работы с сообщениями
+
+paths:
+  /chats:
+    post:
+      summary: Создание нового чата
+      operationId: createChat
+      tags:
+        - chats
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateChatRequest"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChatDto"
+  /messages:
+    post:
+      summary: Отправка сообщения
+      operationId: sendMessage
+      tags:
+        - messages
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SendMessageRequest"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageDto"
+
+components:
+  schemas:
+    CreateChatRequest:
+      description: Запрос на создание чата
+      type: object
+      properties:
+        type:
+          $ref: "#/components/schemas/chatType"
+        userIds:
+          $ref: "#/components/schemas/userIds"
+        firstMessage:
+          $ref: "#/components/schemas/text"
+    SendMessageRequest:
+      description: Запрос на отправку сообщения
+      type: object
+      properties:
+        senderId:
+          $ref: "#/components/schemas/userId"
+        chatId:
+          $ref: "#/components/schemas/chatId"
+        text:
+          $ref: "#/components/schemas/text"
+    MessageDto:
+      description: Сообщение
+      type: object
+      properties:
+        user:
+          $ref: "#/components/schemas/UserDto"
+        chat:
+          $ref: "#/components/schemas/ChatDto"
+        text:
+          $ref: "#/components/schemas/text"
+    UserDto:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/userId"
+        name:
+          $ref: "#/components/schemas/userName"
+    ChatDto:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/userId"
+        type:
+          $ref: "#/components/schemas/chatType"
+    userIds:
+      description: Идентификаторы пользователей
+      type: array
+      items:
+        $ref: "#/components/schemas/userId"
+    userId:
+      description: Идентификатор пользователя
+      type: integer
+      format: int64
+    userName:
+      description: Имя пользователя
+      type: string
+    chatId:
+      description: Идентификатор чата
+      type: integer
+      format: int64
+    chatType:
+      description: Тип чата
+      type: string
+      enum:
+        - PRIVATE
+    text:
+      description: Текст сообщения
+      type: string

@@ -8,10 +8,10 @@ import ru.andryss.antalk.server.entity.ChatEntity;
 import ru.andryss.antalk.server.entity.MessageEntity;
 import ru.andryss.antalk.server.entity.NotificationEntity;
 import ru.andryss.antalk.server.entity.UpdateEntity;
-import ru.andryss.antalk.server.service.ChatService;
+import ru.andryss.antalk.server.repository.ChatRepository;
+import ru.andryss.antalk.server.repository.NotificationRepository;
+import ru.andryss.antalk.server.repository.UpdateRepository;
 import ru.andryss.antalk.server.service.MessageService;
-import ru.andryss.antalk.server.service.NotificationService;
-import ru.andryss.antalk.server.service.UpdateService;
 import ru.andryss.antalk.server.service.dbqueue.DbQueueProcessor;
 import ru.andryss.antalk.server.service.dbqueue.DbQueueSettings;
 import ru.yoomoney.tech.dbqueue.api.TaskExecutionResult;
@@ -21,16 +21,16 @@ import ru.yoomoney.tech.dbqueue.api.TaskExecutionResult;
 @DbQueueSettings(CreateUpdateNotificationsPayload.QUEUE_NAME)
 public class CreateUpdateNotificationsProcessor implements DbQueueProcessor<CreateUpdateNotificationsPayload> {
 
-    private final UpdateService updateService;
-    private final ChatService chatService;
-    private final NotificationService notificationService;
+    private final UpdateRepository updateRepository;
+    private final ChatRepository chatRepository;
+    private final NotificationRepository notificationRepository;
     private final MessageService messageService;
 
     @Override
     public TaskExecutionResult execute(CreateUpdateNotificationsPayload payload) {
         long updateId = payload.getUpdateId();
 
-        UpdateEntity update = updateService.findByIdOrThrow(updateId);
+        UpdateEntity update = updateRepository.findByIdOrThrow(updateId);
 
         switch (update.getType()) {
             case CHAT_CREATED -> handleChatCreatedUpdate(update);
@@ -44,7 +44,7 @@ public class CreateUpdateNotificationsProcessor implements DbQueueProcessor<Crea
     private void handleChatCreatedUpdate(UpdateEntity update) {
         long chatId = (long) update.getData().get("chatId");
 
-        ChatEntity chat = chatService.findByIdOrThrow(chatId);
+        ChatEntity chat = chatRepository.findByIdOrThrow(chatId);
 
         saveNotifications(update.getId(), chat);
     }
@@ -54,7 +54,7 @@ public class CreateUpdateNotificationsProcessor implements DbQueueProcessor<Crea
 
         MessageEntity message = messageService.findByIdOrThrow(messageId);
 
-        ChatEntity chat = chatService.findByIdOrThrow(message.getChatId());
+        ChatEntity chat = chatRepository.findByIdOrThrow(message.getChatId());
 
         saveNotifications(update.getId(), chat);
     }
@@ -69,6 +69,6 @@ public class CreateUpdateNotificationsProcessor implements DbQueueProcessor<Crea
                 })
                 .toList();
 
-        notificationService.save(notifications);
+        notificationRepository.save(notifications);
     }
 }

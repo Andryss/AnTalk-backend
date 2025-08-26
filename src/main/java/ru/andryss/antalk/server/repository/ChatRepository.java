@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ru.andryss.antalk.server.entity.ChatEntity;
 import ru.andryss.antalk.server.entity.ChatType;
+import ru.andryss.antalk.server.exception.ChatNotFoundException;
 import ru.andryss.antalk.server.service.ObjectMapperWrapper;
 
 /**
@@ -55,5 +56,29 @@ public class ChatRepository implements InitializingBean {
             return Optional.empty();
         }
         return Optional.of(updates.get(0));
+    }
+
+    /**
+     * Получить чат по идентификатору. Если чат не найден - выбросить ошибку
+     */
+    public ChatEntity findByIdOrThrow(long id) {
+        return findById(id).orElseThrow(() -> new ChatNotFoundException(id));
+    }
+
+    /**
+     * Сохранить чат. Вернуть сохраненный чат
+     */
+    public ChatEntity save(ChatEntity chat) {
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("type", chat.getType().getId())
+                .addValue("userIds", objectMapper.writeValueAsString(chat.getUserIds()));
+
+        List<ChatEntity> saved = jdbcTemplate.query("""
+                insert into chats(type, user_ids)
+                values (:type, :userUds)
+                returning *
+                """, params, rowMapper);
+
+        return saved.get(0);
     }
 }

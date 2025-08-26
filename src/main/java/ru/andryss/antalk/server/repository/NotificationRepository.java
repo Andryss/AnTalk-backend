@@ -31,7 +31,6 @@ public class NotificationRepository {
         jdbcTemplate.batchUpdate("""
                 insert into notifications(user_id, update_id)
                 values (:userId, :updateId)
-                returning *
                 """, paramsList
         );
     }

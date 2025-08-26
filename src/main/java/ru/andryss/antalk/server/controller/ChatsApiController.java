@@ -1,0 +1,29 @@
+package ru.andryss.antalk.server.controller;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.RestController;
+import ru.andryss.antalk.generated.api.ChatsApi;
+import ru.andryss.antalk.generated.model.ChatDto;
+import ru.andryss.antalk.generated.model.CreateChatRequest;
+import ru.andryss.antalk.server.entity.ChatEntity;
+import ru.andryss.antalk.server.entity.ChatType;
+import ru.andryss.antalk.server.service.ChatService;
+
+@RestController
+@RequiredArgsConstructor
+public class ChatsApiController implements ChatsApi {
+
+    private final ChatService chatService;
+
+    @Override
+    public ChatDto createChat(CreateChatRequest request) {
+        ChatEntity chat = chatService.createNew(request);
+        return convertToDto(chat);
+    }
+
+    private ChatDto convertToDto(ChatEntity chat) {
+        return new ChatDto()
+                .id(chat.getId())
+                .type(ChatType.toApi(chat.getType()));
+    }
+}
