@@ -11,6 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserEntity {
     private long id;
-    private String name;
+    private String username;
+    private String passwordHash;
     private Instant createdAt;
 }

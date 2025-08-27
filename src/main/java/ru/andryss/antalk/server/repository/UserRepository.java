@@ -23,7 +23,8 @@ public class UserRepository {
     private final RowMapper<UserEntity> rowMapper = (rs, rowNum) -> {
         UserEntity user = new UserEntity();
         user.setId(rs.getLong("id"));
-        user.setName(rs.getString("name"));
+        user.setUsername(rs.getString("username"));
+        user.setPasswordHash(rs.getString("password_hash"));
         user.setCreatedAt(rs.getTimestamp("created_at").toInstant());
         return user;
     };
@@ -52,5 +53,22 @@ public class UserRepository {
      */
     public UserEntity findByIdOrThrow(long id) {
         return findById(id).orElseThrow(() -> new UserNotFoundException(id));
+    }
+
+    /**
+     * Сохранить пользователя. Вернуть сохраненного пользователя
+     */
+    public UserEntity save(UserEntity entity) {
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("username", entity.getUsername())
+                .addValue("passwordHash", entity.getPasswordHash());
+
+        List<UserEntity> saved = jdbcTemplate.query("""
+                insert into users(username, password_hash)
+                values (:username, :passwordHash)
+                returning *
+                """, params, rowMapper);
+
+        return saved.get(0);
     }
 }

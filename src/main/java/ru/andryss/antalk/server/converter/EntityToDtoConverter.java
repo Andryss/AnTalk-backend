@@ -30,7 +30,7 @@ public class EntityToDtoConverter {
     public UserDto convertUserToDto(UserEntity user) {
         return new UserDto()
                 .id(user.getId())
-                .name(user.getName());
+                .name(user.getUsername());
     }
 
     /**

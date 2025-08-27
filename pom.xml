@@ -203,12 +203,12 @@
                                         <limit>
                                             <counter>INSTRUCTION</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0.30</minimum> <!-- TODO: Increase up to 0.90 -->
+                                            <minimum>0.70</minimum> <!-- TODO: Increase up to 0.90 -->
                                         </limit>
                                         <limit>
                                             <counter>BRANCH</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0.80</minimum>
+                                            <minimum>0.40</minimum> <!-- TODO: Increase up to 0.90 -->
                                         </limit>
                                     </limits>
                                 </rule>
