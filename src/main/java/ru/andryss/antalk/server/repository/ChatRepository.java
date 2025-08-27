@@ -75,7 +75,7 @@ public class ChatRepository implements InitializingBean {
 
         List<ChatEntity> saved = jdbcTemplate.query("""
                 insert into chats(type, user_ids)
-                values (:type, :userUds)
+                values (:type, :userIds::jsonb)
                 returning *
                 """, params, rowMapper);
 

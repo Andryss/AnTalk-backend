@@ -70,12 +70,12 @@ public class UpdateRepository implements InitializingBean {
      */
     public UpdateEntity save(UpdateEntity update) {
         MapSqlParameterSource params = new MapSqlParameterSource()
-                .addValue("type", update.getType())
+                .addValue("type", update.getType().getId())
                 .addValue("data", objectMapper.writeValueAsString(update.getData()));
 
         List<UpdateEntity> saved = jdbcTemplate.query("""
                 insert into updates(type, data)
-                values (:type, :data)
+                values (:type, :data::jsonb)
                 returning *
                 """, params, rowMapper);
 

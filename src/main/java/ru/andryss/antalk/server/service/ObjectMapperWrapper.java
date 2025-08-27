@@ -1,5 +1,7 @@
 package ru.andryss.antalk.server.service;
 
+import java.util.Map;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -42,6 +44,15 @@ public class ObjectMapperWrapper {
     @SneakyThrows
     public <T> T readValue(String data, Class<T> cls) {
         return mapper.readValue(data, cls);
+    }
+
+    /**
+     * Десериализовать объект из JSON строки
+     */
+    @SneakyThrows
+    public Map<String, Object> readMap(String data) {
+        return readValue(data, new TypeReference<>() {
+        });
     }
 
     /**

@@ -172,9 +172,9 @@
                 <configuration>
                     <excludes>
                         <!-- exclude generated classes -->
-                        <exclude>ru/andryss/trousseau/generated/**</exclude>
+                        <exclude>ru/andryss/antalk/generated/**</exclude>
                         <!-- exclude configuration classes -->
-                        <exclude>ru/andryss/trousseau/config/**</exclude>
+                        <exclude>ru/andryss/antalk/config/**</exclude>
                     </excludes>
                 </configuration>
                 <executions>

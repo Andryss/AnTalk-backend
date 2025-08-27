@@ -15,6 +15,7 @@
 
     <include file="chats.sql" relativeToChangelogFile="true"/>
     <include file="messages.sql" relativeToChangelogFile="true"/>
+    <include file="updates.sql" relativeToChangelogFile="true"/>
     <include file="notifications.sql" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
