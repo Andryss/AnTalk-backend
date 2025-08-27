@@ -2,9 +2,9 @@ package ru.andryss.antalk.server.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
-import ru.andryss.antalk.generated.api.MessagesApi;
-import ru.andryss.antalk.generated.model.MessageDto;
-import ru.andryss.antalk.generated.model.SendMessageRequest;
+import ru.andryss.antalk.server.generated.api.MessagesApi;
+import ru.andryss.antalk.server.generated.model.MessageDto;
+import ru.andryss.antalk.server.generated.model.SendMessageRequest;
 import ru.andryss.antalk.server.service.MessageService;
 
 @RestController

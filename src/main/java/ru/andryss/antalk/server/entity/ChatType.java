@@ -31,7 +31,7 @@ public enum ChatType {
     /**
      * Конвертировать тип чата из класса API
      */
-    public static ChatType fromApi(ru.andryss.antalk.generated.model.ChatType type) {
+    public static ChatType fromApi(ru.andryss.antalk.server.generated.model.ChatType type) {
         return switch (type) {
             case PRIVATE -> PRIVATE;
         };
@@ -40,9 +40,9 @@ public enum ChatType {
     /**
      * Конвертировать тип чата в класс API
      */
-    public static ru.andryss.antalk.generated.model.ChatType toApi(ChatType type) {
+    public static ru.andryss.antalk.server.generated.model.ChatType toApi(ChatType type) {
         return switch (type) {
-            case PRIVATE -> ru.andryss.antalk.generated.model.ChatType.PRIVATE;
+            case PRIVATE -> ru.andryss.antalk.server.generated.model.ChatType.PRIVATE;
         };
     }
 }

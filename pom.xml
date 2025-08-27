@@ -172,9 +172,9 @@
                 <configuration>
                     <excludes>
                         <!-- exclude generated classes -->
-                        <exclude>ru/andryss/antalk/generated/**</exclude>
+                        <exclude>**/generated/**</exclude>
                         <!-- exclude configuration classes -->
-                        <exclude>ru/andryss/antalk/config/**</exclude>
+                        <exclude>**/config/**</exclude>
                     </excludes>
                 </configuration>
                 <executions>
@@ -230,8 +230,8 @@
                         <configuration>
                             <inputSpec>${project.basedir}/src/main/resources/api/api.yaml</inputSpec>
                             <generatorName>spring</generatorName>
-                            <apiPackage>ru.andryss.antalk.generated.api</apiPackage>
-                            <modelPackage>ru.andryss.antalk.generated.model</modelPackage>
+                            <apiPackage>ru.andryss.antalk.server.generated.api</apiPackage>
+                            <modelPackage>ru.andryss.antalk.server.generated.model</modelPackage>
                             <generateSupportingFiles>false</generateSupportingFiles>
                             <configOptions>
                                 <skipDefaultInterface>true</skipDefaultInterface>

@@ -10,9 +10,12 @@ import org.springframework.stereotype.Component;
 import ru.andryss.antalk.server.entity.ChatEntity;
 import ru.andryss.antalk.server.entity.ChatType;
 import ru.andryss.antalk.server.entity.MessageEntity;
+import ru.andryss.antalk.server.entity.NotificationEntity;
 import ru.andryss.antalk.server.entity.UpdateEntity;
+import ru.andryss.antalk.server.entity.UpdateType;
 import ru.andryss.antalk.server.repository.ChatRepository;
 import ru.andryss.antalk.server.repository.MessageRepository;
+import ru.andryss.antalk.server.repository.NotificationRepository;
 import ru.andryss.antalk.server.repository.UpdateRepository;
 import ru.andryss.antalk.server.repository.UserRepository;
 import ru.andryss.antalk.server.service.ObjectMapperWrapper;
@@ -31,6 +34,9 @@ public class DbTestUtil {
 
     @Autowired
     UpdateRepository updateRepository;
+
+    @Autowired
+    NotificationRepository notificationRepository;
 
     @Autowired
     NamedParameterJdbcTemplate jdbcTemplate;
@@ -70,8 +76,37 @@ public class DbTestUtil {
         return messageRepository.findByIdOrThrow(id);
     }
 
+    public void saveMessage(long id, long chatId, long senderId, String text) {
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("id", id)
+                .addValue("chatId", chatId)
+                .addValue("senderId", senderId)
+                .addValue("text", text);
+
+        jdbcTemplate.update("""
+                insert into messages(id, chat_id, sender_id, text)
+                values (:id, :chatId, :senderId, :text)
+                """, params);
+    }
+
     public UpdateEntity findUpdateById(long id) {
         return updateRepository.findByIdOrThrow(id);
+    }
+
+    public void saveUpdate(long id, UpdateType type, Map<String, Object> data) {
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("id", id)
+                .addValue("type", type.getId())
+                .addValue("data", objectMapper.writeValueAsString(data));
+
+        jdbcTemplate.update("""
+                insert into updates(id, type, data)
+                values (:id, :type, :data::jsonb)
+                """, params);
+    }
+
+    public NotificationEntity findNotificationById(long id) {
+        return notificationRepository.findByIdOrThrow(id);
     }
 
     public List<Map<String, Object>> findTasksByQueue(String queue) {

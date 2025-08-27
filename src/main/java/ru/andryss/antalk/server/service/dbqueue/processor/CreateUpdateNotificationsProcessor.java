@@ -42,7 +42,7 @@ public class CreateUpdateNotificationsProcessor implements DbQueueProcessor<Crea
     }
 
     private void handleChatCreatedUpdate(UpdateEntity update) {
-        long chatId = (long) update.getData().get("chatId");
+        long chatId = ((Number) update.getData().get("chatId")).longValue();
 
         ChatEntity chat = chatRepository.findByIdOrThrow(chatId);
 
@@ -50,7 +50,7 @@ public class CreateUpdateNotificationsProcessor implements DbQueueProcessor<Crea
     }
 
     private void handleMessageSentUpdate(UpdateEntity update) {
-        long messageId = (long) update.getData().get("messageId");
+        long messageId = ((Number) update.getData().get("messageId")).longValue();
 
         MessageEntity message = messageRepository.findByIdOrThrow(messageId);
 

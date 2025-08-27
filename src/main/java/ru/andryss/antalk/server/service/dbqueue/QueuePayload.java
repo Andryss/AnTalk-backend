@@ -2,7 +2,7 @@ package ru.andryss.antalk.server.service.dbqueue;
 
 import lombok.Getter;
 import lombok.Setter;
-import ru.andryss.antalk.server.requestid.RequestIdAware;
+import ru.andryss.antalk.server.config.requestid.RequestIdAware;
 
 /**
  * Описание базовых данных для задачи из очереди

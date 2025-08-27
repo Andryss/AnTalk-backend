@@ -16,7 +16,7 @@ import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.util.ClassUtils;
-import ru.andryss.antalk.server.requestid.DbQueueTaskRequestIdAssignListener;
+import ru.andryss.antalk.server.config.requestid.DbQueueTaskRequestIdAssignListener;
 import ru.andryss.antalk.server.service.ObjectMapperWrapper;
 import ru.andryss.antalk.server.service.dbqueue.DbQueueProcessor;
 import ru.andryss.antalk.server.service.dbqueue.DbQueueSettings;

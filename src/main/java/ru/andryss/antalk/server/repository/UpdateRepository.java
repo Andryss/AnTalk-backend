@@ -3,7 +3,6 @@ package ru.andryss.antalk.server.repository;
 import java.util.List;
 import java.util.Optional;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.jdbc.core.RowMapper;
@@ -33,7 +32,7 @@ public class UpdateRepository implements InitializingBean {
             UpdateEntity update = new UpdateEntity();
             update.setId(rs.getLong("id"));
             update.setType(UpdateType.fromId(rs.getInt("type")));
-            update.setData(objectMapper.readValue(rs.getString("data"), new TypeReference<>() {}));
+            update.setData(objectMapper.readMap(rs.getString("data")));
             update.setCreatedAt(rs.getTimestamp("created_at").toInstant());
             return update;
         };

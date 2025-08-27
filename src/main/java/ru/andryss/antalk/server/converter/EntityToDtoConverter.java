@@ -1,9 +1,9 @@
 package ru.andryss.antalk.server.converter;
 
 import org.springframework.stereotype.Component;
-import ru.andryss.antalk.generated.model.ChatDto;
-import ru.andryss.antalk.generated.model.MessageDto;
-import ru.andryss.antalk.generated.model.UserDto;
+import ru.andryss.antalk.server.generated.model.ChatDto;
+import ru.andryss.antalk.server.generated.model.MessageDto;
+import ru.andryss.antalk.server.generated.model.UserDto;
 import ru.andryss.antalk.server.entity.ChatEntity;
 import ru.andryss.antalk.server.entity.ChatType;
 import ru.andryss.antalk.server.entity.MessageEntity;

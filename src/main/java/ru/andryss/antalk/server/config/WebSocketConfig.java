@@ -7,7 +7,7 @@ import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
-import ru.andryss.antalk.server.requestid.WebSocketRequestIdAssignInterceptor;
+import ru.andryss.antalk.server.config.requestid.WebSocketRequestIdAssignInterceptor;
 
 @Configuration
 @RequiredArgsConstructor

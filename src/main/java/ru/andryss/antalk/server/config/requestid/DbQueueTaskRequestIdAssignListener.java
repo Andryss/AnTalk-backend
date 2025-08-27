@@ -1,4 +1,4 @@
-package ru.andryss.antalk.server.requestid;
+package ru.andryss.antalk.server.config.requestid;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;

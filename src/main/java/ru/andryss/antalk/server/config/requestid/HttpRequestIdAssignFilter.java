@@ -1,4 +1,4 @@
-package ru.andryss.antalk.server.requestid;
+package ru.andryss.antalk.server.config.requestid;
 
 import java.io.IOException;
 
