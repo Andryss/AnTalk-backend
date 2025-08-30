@@ -11,6 +11,7 @@ import ru.andryss.antalk.server.entity.ChatEntity;
 import ru.andryss.antalk.server.entity.ChatType;
 import ru.andryss.antalk.server.entity.MessageEntity;
 import ru.andryss.antalk.server.entity.NotificationEntity;
+import ru.andryss.antalk.server.entity.SessionStatus;
 import ru.andryss.antalk.server.entity.UpdateEntity;
 import ru.andryss.antalk.server.entity.UpdateType;
 import ru.andryss.antalk.server.repository.ChatRepository;
@@ -107,6 +108,32 @@ public class DbTestUtil {
 
     public NotificationEntity findNotificationById(long id) {
         return notificationRepository.findByIdOrThrow(id);
+    }
+
+    public void saveNotification(long id, long userId, long updateId) {
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("id", id)
+                .addValue("userId", userId)
+                .addValue("updateId", updateId);
+
+        jdbcTemplate.update("""
+                insert into notifications(id, user_id, update_id)
+                values (:id, :userId, :updateId)
+                """, params);
+    }
+
+    public void saveSession(long id, long userId, Map<String, Object> meta, SessionStatus status, long lastNotification) {
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("id", id)
+                .addValue("userId", userId)
+                .addValue("meta", objectMapper.writeValueAsString(meta))
+                .addValue("status", status.getId())
+                .addValue("lastNotification", lastNotification);
+
+        jdbcTemplate.update("""
+                insert into sessions(id, user_id, meta, status, last_notification)
+                values (:id, :userId, :meta::jsonb, :status, :lastNotification)
+                """, params);
     }
 
     public List<Map<String, Object>> findTasksByQueue(String queue) {

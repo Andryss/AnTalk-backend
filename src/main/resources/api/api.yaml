@@ -73,6 +73,18 @@ components:
           $ref: "#/components/schemas/chatId"
         text:
           $ref: "#/components/schemas/messageText"
+    UpdateDto:
+      description: Обновление
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/updateId"
+        type:
+          $ref: "#/components/schemas/updateType"
+        chat:
+          $ref: "#/components/schemas/ChatDto"
+        message:
+          $ref: "#/components/schemas/MessageDto"
     MessageDto:
       description: Сообщение
       type: object
@@ -127,3 +139,13 @@ components:
     messageText:
       description: Текст сообщения
       type: string
+    updateId:
+      description: Идентификатор обновления
+      type: integer
+      format: int64
+    updateType:
+      description: Тип обновления
+      type: string
+      enum:
+        - CHAT_CREATED
+        - MESSAGE_SENT

@@ -72,4 +72,17 @@ public class NotificationRepository {
     public NotificationEntity findByIdOrThrow(long id) {
         return findById(id).orElseThrow(() -> new NotificationNotFoundException(id));
     }
+
+    /**
+     * Получить уведомления по заданному обновлению
+     */
+    public List<NotificationEntity> findByUpdateId(long updateId) {
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("updateId", updateId);
+
+        return jdbcTemplate.query("""
+                select * from notifications
+                where update_id = :updateId
+                """, params, rowMapper);
+    }
 }

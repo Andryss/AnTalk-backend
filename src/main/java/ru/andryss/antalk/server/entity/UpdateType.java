@@ -31,4 +31,14 @@ public enum UpdateType {
         }
         throw new IllegalArgumentException("Unknown update type " + id);
     }
+
+    /**
+     * Конвертировать тип обновления в класс API
+     */
+    public static ru.andryss.antalk.server.generated.model.UpdateType toApi(UpdateType update) {
+        return switch (update) {
+            case CHAT_CREATED -> ru.andryss.antalk.server.generated.model.UpdateType.CHAT_CREATED;
+            case MESSAGE_SENT -> ru.andryss.antalk.server.generated.model.UpdateType.MESSAGE_SENT;
+        };
+    }
 }
