@@ -2,6 +2,7 @@ package ru.andryss.antalk.server.repository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.InitializingBean;
@@ -11,10 +12,11 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ru.andryss.antalk.server.entity.SessionEntity;
 import ru.andryss.antalk.server.entity.SessionStatus;
+import ru.andryss.antalk.server.exception.SessionNotFoundException;
 import ru.andryss.antalk.server.service.ObjectMapperWrapper;
 
 /**
- * Репозиторий для работы с таблицей "chats"
+ * Репозиторий для работы с таблицей "sessions"
  */
 @Repository
 @RequiredArgsConstructor
@@ -71,5 +73,45 @@ public class SessionRepository implements InitializingBean {
                 update sessions set last_notification = :lastNotification
                 where id = :id
                 """, paramsList);
+    }
+
+    /**
+     * Получить сессию по идентификатору
+     */
+    public Optional<SessionEntity> findById(long id) {
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("id", id);
+
+        List<SessionEntity> found = jdbcTemplate.query("""
+                select * from sessions
+                where id = :id
+                """, params, rowMapper
+        );
+
+        if (found.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of(found.get(0));
+    }
+
+    /**
+     * Получить сессию по идентификатору. Если сессия не найдена - выбросить ошибку
+     */
+    public SessionEntity findByIdOrThrow(long id) {
+        return findById(id).orElseThrow(() -> new SessionNotFoundException(id));
+    }
+
+    /**
+     * Обновить статус заданной сессии
+     */
+    public void updateStatus(long id, SessionStatus status) {
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("id", id)
+                .addValue("newStatus", status.getId());
+
+        jdbcTemplate.update("""
+                update sessions set status = :newStatus
+                where id = :id
+                """, params);
     }
 }

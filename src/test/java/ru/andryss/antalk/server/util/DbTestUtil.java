@@ -11,12 +11,14 @@ import ru.andryss.antalk.server.entity.ChatEntity;
 import ru.andryss.antalk.server.entity.ChatType;
 import ru.andryss.antalk.server.entity.MessageEntity;
 import ru.andryss.antalk.server.entity.NotificationEntity;
+import ru.andryss.antalk.server.entity.SessionEntity;
 import ru.andryss.antalk.server.entity.SessionStatus;
 import ru.andryss.antalk.server.entity.UpdateEntity;
 import ru.andryss.antalk.server.entity.UpdateType;
 import ru.andryss.antalk.server.repository.ChatRepository;
 import ru.andryss.antalk.server.repository.MessageRepository;
 import ru.andryss.antalk.server.repository.NotificationRepository;
+import ru.andryss.antalk.server.repository.SessionRepository;
 import ru.andryss.antalk.server.repository.UpdateRepository;
 import ru.andryss.antalk.server.repository.UserRepository;
 import ru.andryss.antalk.server.service.ObjectMapperWrapper;
@@ -38,6 +40,9 @@ public class DbTestUtil {
 
     @Autowired
     NotificationRepository notificationRepository;
+
+    @Autowired
+    SessionRepository sessionRepository;
 
     @Autowired
     NamedParameterJdbcTemplate jdbcTemplate;
@@ -120,6 +125,10 @@ public class DbTestUtil {
                 insert into notifications(id, user_id, update_id)
                 values (:id, :userId, :updateId)
                 """, params);
+    }
+
+    public SessionEntity findSessionById(long id) {
+        return sessionRepository.findByIdOrThrow(id);
     }
 
     public void saveSession(long id, long userId, Map<String, Object> meta, SessionStatus status, long lastNotification) {

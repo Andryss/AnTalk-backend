@@ -85,4 +85,22 @@ public class NotificationRepository {
                 where update_id = :updateId
                 """, params, rowMapper);
     }
+
+    /**
+     * Найти уведомления по заданному пользователю.
+     * Отфильтровать только с большим идентификатором и вернуть заданное количество
+     */
+    public List<NotificationEntity> findByUserIdAndIdGreaterThen(long userId, long id, long limit) {
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("userId", userId)
+                .addValue("idGreater", id)
+                .addValue("limit", limit);
+
+        return jdbcTemplate.query("""
+                select * from notifications
+                where user_id = :userId and id > :idGreater
+                order by id
+                limit :limit
+                """, params, rowMapper);
+    }
 }
