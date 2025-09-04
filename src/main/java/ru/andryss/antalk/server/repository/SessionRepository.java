@@ -12,7 +12,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ru.andryss.antalk.server.entity.SessionEntity;
 import ru.andryss.antalk.server.entity.SessionStatus;
-import ru.andryss.antalk.server.exception.SessionNotFoundException;
+import ru.andryss.antalk.server.exception.Errors;
 import ru.andryss.antalk.server.service.ObjectMapperWrapper;
 
 /**
@@ -98,7 +98,7 @@ public class SessionRepository implements InitializingBean {
      * Получить сессию по идентификатору. Если сессия не найдена - выбросить ошибку
      */
     public SessionEntity findByIdOrThrow(long id) {
-        return findById(id).orElseThrow(() -> new SessionNotFoundException(id));
+        return findById(id).orElseThrow(() -> Errors.sessionNotFound(id));
     }
 
     /**
@@ -113,5 +113,24 @@ public class SessionRepository implements InitializingBean {
                 update sessions set status = :newStatus
                 where id = :id
                 """, params);
+    }
+
+    /**
+     * Сохранить сессию. Вернуть сохраненную сессию
+     */
+    public SessionEntity save(SessionEntity session) {
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("userId", session.getUserId())
+                .addValue("meta", objectMapper.writeValueAsString(session.getMeta()))
+                .addValue("status", session.getStatus().getId())
+                .addValue("lastNotification", session.getLastNotification());
+
+        List<SessionEntity> saved = jdbcTemplate.query("""
+                insert into sessions(user_id, meta, status, last_notification)
+                values (:userId, :meta::jsonb, :status, :lastNotification)
+                returning *
+                """, params, rowMapper);
+
+        return saved.get(0);
     }
 }

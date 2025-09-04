@@ -9,7 +9,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ru.andryss.antalk.server.entity.NotificationEntity;
-import ru.andryss.antalk.server.exception.NotificationNotFoundException;
+import ru.andryss.antalk.server.exception.Errors;
 
 /**
  * Репозиторий для работы с таблицей "notifications"
@@ -70,7 +70,7 @@ public class NotificationRepository {
      * Получить уведомление по идентификатору. Если уведомление не найдено - выбросить ошибку
      */
     public NotificationEntity findByIdOrThrow(long id) {
-        return findById(id).orElseThrow(() -> new NotificationNotFoundException(id));
+        return findById(id).orElseThrow(() -> Errors.notificationNotFound(id));
     }
 
     /**

@@ -9,7 +9,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ru.andryss.antalk.server.entity.UserEntity;
-import ru.andryss.antalk.server.exception.UserNotFoundException;
+import ru.andryss.antalk.server.exception.Errors;
 
 /**
  * Репозиторий для работы с таблицей "chats"
@@ -52,7 +52,26 @@ public class UserRepository {
      * Получить пользователя по идентификатору. Если пользователь не найден - выбросить ошибку
      */
     public UserEntity findByIdOrThrow(long id) {
-        return findById(id).orElseThrow(() -> new UserNotFoundException(id));
+        return findById(id).orElseThrow(() -> Errors.userNotFound(id));
+    }
+
+    /**
+     * Получить пользователя по имени пользователя
+     */
+    public Optional<UserEntity> findByUsername(String username) {
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("username", username);
+
+        List<UserEntity> updates = jdbcTemplate.query("""
+                select * from users
+                where username = :username
+                """, params, rowMapper
+        );
+
+        if (updates.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of(updates.get(0));
     }
 
     /**

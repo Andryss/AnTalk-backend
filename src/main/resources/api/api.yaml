@@ -8,12 +8,32 @@ servers:
   - url: https://localhost:8080
 
 tags:
+  - name: auth
+    description: API для регистрации и входа
   - name: chats
     description: API для работы с чатами
   - name: messages
     description: API для работы с сообщениями
 
 paths:
+  /auth/signin:
+    post:
+      summary: Войти в аккаунт
+      operationId: signIn
+      tags:
+        - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SignInRequest"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SignInResponse"
   /chats:
     post:
       summary: Создание нового чата
@@ -53,6 +73,55 @@ paths:
 
 components:
   schemas:
+    ErrorObject:
+      description: Ответ содержащий информацию об ошибке
+      type: object
+      properties:
+        code:
+          description: Числовой код ошибки
+          type: integer
+          format: int32
+        message:
+          description: Уникальный текстовый идентификатор ошибки
+          type: string
+        humanMessage:
+          description: Человеко-читаемое описание ошибки
+          type: string
+    SignInRequest:
+      description: Запрос на вход в сервис
+      type: object
+      properties:
+        username:
+          $ref: "#/components/schemas/userName"
+        password:
+          $ref: "#/components/schemas/password"
+        deviceInfo:
+          $ref: "#/components/schemas/deviceInfo"
+    SignInResponse:
+      description: Ответ на запрос входа в сервис
+      type: object
+      properties:
+        session:
+          description: Данные для идентификации сессии (входа на устройстве)
+          type: object
+          properties:
+            id:
+              $ref: "#/components/schemas/sessionId"
+            token:
+              $ref: "#/components/schemas/sessionToken"
+    password:
+      description: Пароль пользователя
+      type: string
+    deviceInfo:
+      description: Мета-информация об устройстве
+      type: object
+    sessionId:
+      description: Идентификатор сессии (входа на устройстве)
+      type: integer
+      format: int64
+    sessionToken:
+      description: Токен сессии
+      type: string
     CreateChatRequest:
       description: Запрос на создание чата
       type: object

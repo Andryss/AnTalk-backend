@@ -17,3 +17,8 @@ spring.liquibase.change-log=classpath:/liquibase/db-changelog.xml
 ### Dbqueue config
 db-queue.shard-id=queue-shard-id
 db-queue.table-name=queue_tasks
+
+### JWT config
+jwt.token.secret=your-super-secret-key
+# 180 days
+jwt.token.token-expiration-millis=15552000000

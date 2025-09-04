@@ -9,7 +9,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ru.andryss.antalk.server.entity.MessageEntity;
-import ru.andryss.antalk.server.exception.MessageNotFoundException;
+import ru.andryss.antalk.server.exception.Errors;
 
 /**
  * Репозиторий для работы с таблицей "messages"
@@ -53,7 +53,7 @@ public class MessageRepository {
      * Получить сообщение по идентификатору. Если сообщение не найдено - выбросить ошибку
      */
     public MessageEntity findByIdOrThrow(long id) {
-        return findById(id).orElseThrow(() -> new MessageNotFoundException(id));
+        return findById(id).orElseThrow(() -> Errors.messageNotFound(id));
     }
 
     /**

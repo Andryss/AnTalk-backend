@@ -11,7 +11,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ru.andryss.antalk.server.entity.UpdateEntity;
 import ru.andryss.antalk.server.entity.UpdateType;
-import ru.andryss.antalk.server.exception.UpdateNotFoundException;
+import ru.andryss.antalk.server.exception.Errors;
 import ru.andryss.antalk.server.service.ObjectMapperWrapper;
 
 /**
@@ -61,7 +61,7 @@ public class UpdateRepository implements InitializingBean {
      * Получить обновление по идентификатору. Если обновление не найдено - выбросить ошибку
      */
     public UpdateEntity findByIdOrThrow(long id) {
-        return findById(id).orElseThrow(() -> new UpdateNotFoundException(id));
+        return findById(id).orElseThrow(() -> Errors.updateNotFound(id));
     }
 
     /**

@@ -12,7 +12,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ru.andryss.antalk.server.entity.ChatEntity;
 import ru.andryss.antalk.server.entity.ChatType;
-import ru.andryss.antalk.server.exception.ChatNotFoundException;
+import ru.andryss.antalk.server.exception.Errors;
 import ru.andryss.antalk.server.service.ObjectMapperWrapper;
 
 /**
@@ -62,7 +62,7 @@ public class ChatRepository implements InitializingBean {
      * Получить чат по идентификатору. Если чат не найден - выбросить ошибку
      */
     public ChatEntity findByIdOrThrow(long id) {
-        return findById(id).orElseThrow(() -> new ChatNotFoundException(id));
+        return findById(id).orElseThrow(() -> Errors.chatNotFound(id));
     }
 
     /**
