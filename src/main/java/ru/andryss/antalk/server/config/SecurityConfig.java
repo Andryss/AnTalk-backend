@@ -17,7 +17,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import ru.andryss.antalk.server.generated.model.ErrorObject;
+import ru.andryss.antalk.server.security.JwtRequestFilter;
 import ru.andryss.antalk.server.security.JwtTokenUtil;
 import ru.andryss.antalk.server.service.ObjectMapperWrapper;
 
@@ -42,6 +44,11 @@ public class SecurityConfig {
     }
 
     @Bean
+    public JwtRequestFilter jwtRequestFilter() {
+        return new JwtRequestFilter(jwtTokenUtil(), objectMapper);
+    }
+
+    @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
@@ -55,9 +62,12 @@ public class SecurityConfig {
                         .requestMatchers(GET, "/ping").permitAll()
                         // auth
                         .requestMatchers(POST, "/auth/signin").permitAll()
+                        // web socket
+                        .requestMatchers(GET, "/ws").authenticated()
                         // other
-                        .anyRequest().permitAll() // TODO: change to denyAll()
+                        .anyRequest().denyAll()
                 )
+                .addFilterBefore(jwtRequestFilter(), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(c -> c
                         .authenticationEntryPoint(authenticationEntryPoint())
                         .accessDeniedHandler(accessDeniedHandler())

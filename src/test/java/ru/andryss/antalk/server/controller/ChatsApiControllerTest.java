@@ -13,13 +13,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class ChatsApiControllerTest extends BaseApiTest {
+class ChatsApiControllerTest extends BaseAuthTest {
 
     @Test
     void createNewPrivateChatTest() throws Exception {
+        AuthData authData = registerUserAndSignIn(2, "some-user", "some-pass");
+
         mockMvc.perform(
                 post("/chats")
                         .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", formatAuthorization(authData))
                         .content("""
                                 {
                                     "type": "PRIVATE",

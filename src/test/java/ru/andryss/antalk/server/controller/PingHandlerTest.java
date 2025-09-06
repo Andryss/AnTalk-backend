@@ -2,9 +2,7 @@ package ru.andryss.antalk.server.controller;
 
 import java.lang.reflect.Type;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,30 +12,38 @@ import org.springframework.messaging.simp.stomp.StompFrameHandler;
 import org.springframework.messaging.simp.stomp.StompHeaders;
 import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
+import org.springframework.web.socket.WebSocketHttpHeaders;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
-import ru.andryss.antalk.server.BaseDbTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class PingHandlerTest extends BaseDbTest {
+class PingHandlerTest extends BaseAuthTest {
 
     @LocalServerPort
     int port;
 
     @Test
     @SuppressWarnings("NullableProblems")
-    void pingTest() throws ExecutionException, InterruptedException, TimeoutException {
+    void pingTest() throws Exception {
+        // sign in as some user
+        AuthData authData = registerUserAndSignIn(15, "user", "pass");
+
         // init web socket client
         StandardWebSocketClient webSocketClient = new StandardWebSocketClient();
         WebSocketStompClient stompClient = new WebSocketStompClient(webSocketClient);
         stompClient.setMessageConverter(new StringMessageConverter());
 
+        // add authorization header
+        WebSocketHttpHeaders headers = new WebSocketHttpHeaders();
+        headers.add("Authorization", formatAuthorization(authData));
+
         // connect to app
         CompletableFuture<StompSession> connectFuture = stompClient.connectAsync(
                 "ws://localhost:" + port + "/ws",
+                headers,
                 new StompSessionHandlerAdapter() { }
         );
 

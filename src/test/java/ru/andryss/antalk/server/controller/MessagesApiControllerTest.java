@@ -13,16 +13,18 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class MessagesApiControllerTest extends BaseApiTest {
+class MessagesApiControllerTest extends BaseAuthTest {
 
     @Test
     void sendNewMessageTest() throws Exception {
-        dbTestUtil.saveUser(111, "user", "pass-hash");
+        AuthData authData = registerUserAndSignIn(111, "user", "some-pass");
+
         dbTestUtil.saveChat(777, ChatType.PRIVATE, List.of(111L));
 
         mockMvc.perform(
                 post("/messages")
                         .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", formatAuthorization(authData))
                         .content("""
                                 {
                                     "senderId": 111,
