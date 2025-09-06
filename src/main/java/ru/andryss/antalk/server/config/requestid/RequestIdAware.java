@@ -9,15 +9,20 @@ import org.slf4j.MDC;
  */
 public interface RequestIdAware {
 
+    /**
+     * Переменная для хранения идентификатора запроса в контексте.
+     */
     String REQUEST_ID_VARIABLE = "requestId";
+    /**
+     * Заголовок для хранения идентификатора запроса.
+     */
+    String REQUEST_ID_HEADER = "X-Request-Id";
 
     /**
-     * Присвоить текущему обработчику идентификатор запроса.
-     * Должен быть очищен после обработки запроса при помощи {@link #clearRequestId()}
+     * Сгенерировать и вернуть новый идентификатор запроса.
      */
-    default void assignRequestId() {
-        String requestId = UUID.randomUUID().toString();
-        MDC.put(REQUEST_ID_VARIABLE, requestId);
+    default String generateRequestId() {
+        return UUID.randomUUID().toString();
     }
 
     /**

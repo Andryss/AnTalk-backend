@@ -62,6 +62,10 @@ public class SecurityConfig {
                         .requestMatchers(GET, "/ping").permitAll()
                         // auth
                         .requestMatchers(POST, "/auth/signin").permitAll()
+                        // chats
+                        .requestMatchers(POST, "/chats").authenticated()
+                        // messages
+                        .requestMatchers(POST, "/messages").authenticated()
                         // web socket
                         .requestMatchers(GET, "/ws").authenticated()
                         // other
